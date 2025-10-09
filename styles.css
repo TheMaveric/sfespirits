@@ -477,8 +477,19 @@ cite {
 @media (max-width: 768px) {
     /* Mobile Navigation */
     .navbar-nav {
-        gap: 25px;
-    }
+            display: none; /* Hides desktop links when space is small */
+            flex-direction: column;
+            /* ... other mobile-active styles ... */
+        }
+
+        .navbar-nav.mobile-active {
+                display: flex;
+        }
+
+            .hamburger-menu {
+                display: block; /* Shows hamburger when space is small */
+                z-index: 1001; /* Ensure it stays above the overlay menu */
+            }
 
     .nav-link {
         font-size: 1.3rem;
