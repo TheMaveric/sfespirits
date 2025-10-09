@@ -474,6 +474,12 @@ cite {
     }
 }
 
+/* In styles.css */
+.highlight-sfe {
+    font-weight: bold !important; /* Enforce bold */
+    text-decoration: underline !important; /* Enforce underline */
+}
+
 @media (max-width: 768px) {
     /* Mobile Navigation */
     .navbar-nav {
