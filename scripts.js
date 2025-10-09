@@ -1,152 +1,291 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // ========== CORE NAVIGATION LOGIC ==========
-    const navLinks = document.querySelectorAll('.nav-link');
-    const pages = document.querySelectorAll('.page-content');
+document.addEventListener('DOMContentLoaded', function () {
+
+    // --- Mobile Navigation ---
+    const hamburger = document.querySelector('.hamburger-menu');
+    const navMenu = document.querySelector('.navbar-nav');
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+    // Function to close the mobile menu and reset icon
+    function closeMobileMenu() {
+        if (navMenu.classList.contains('mobile-active')) {
+            navMenu.classList.remove('mobile-active');
+            hamburger.setAttribute('aria-expanded', 'false');
+            // Ensure correct icon is shown (fa-bars is the closed state)
+            const icon = hamburger.querySelector('i');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+    }
+
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', () => {
+            const isOpened = navMenu.classList.toggle('mobile-active');
+            hamburger.setAttribute('aria-expanded', isOpened);
+
+            // Toggle hamburger icon for visual feedback
+            const icon = hamburger.querySelector('i');
+            if (isOpened) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    }
+
+    // Close menu when a link is clicked
     navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
+        link.addEventListener('click', closeMobileMenu);
+    });
+
+
+    // --- Single Page Application (SPA) Navigation ---
+    const pageLinks = document.querySelectorAll('.nav-link');
+    const pages = document.querySelectorAll('.page-content');
+
+    pageLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
-            const targetPageId = link.getAttribute('data-page');
-            pages.forEach(page => page.style.display = 'none');
+            const targetPageId = this.getAttribute('data-page');
+
+            // Hide all pages
+            pages.forEach(page => {
+                page.style.display = 'none';
+            });
+
+            // Show the target page
             const targetPage = document.getElementById(targetPageId);
-            if (targetPage) targetPage.style.display = 'block';
-            navLinks.forEach(nav => nav.classList.remove('active-link'));
-            link.classList.add('active-link');
+            if (targetPage) {
+                targetPage.style.display = 'block';
+            }
+
+            // Update active link in navigation
+            pageLinks.forEach(nav => nav.classList.remove('active-link'));
+            this.classList.add('active-link');
+
+            // Scroll to top and trigger animations for the new page
             window.scrollTo(0, 0);
+            observeSections();
         });
     });
 
-    // ========== HOME PAGE: TABS LOGIC ==========
-    const tabButtons = document.querySelectorAll('.tab-button');
-    if (tabButtons.length > 0) {
-        const tabContents = document.querySelectorAll('.tab-content');
+    // --- Scoped Tabs Functionality ---
+    const tabContainers = document.querySelectorAll('.tabs-container');
+    tabContainers.forEach(container => {
+        const tabButtons = container.querySelectorAll('.tab-button');
+        const parentSection = container.closest('section');
+        const tabContents = parentSection.querySelectorAll('.tab-content');
+
         tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
+            button.addEventListener('click', function () {
+                const tabId = this.getAttribute('data-tab');
+
                 tabButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                tabContents.forEach(content => content.classList.remove('active'));
-                document.getElementById(button.dataset.tab).classList.add('active');
-            });
-        });
-    }
+                this.classList.add('active');
 
-    // ========== INGREDIENTS PAGE: NEW INTERACTIVE LOGIC ==========
-    const ingredientSelectors = document.querySelectorAll('.ingredient-selector-item');
-    if (ingredientSelectors.length > 0) {
-        const ingredientImages = document.querySelectorAll('.ingredient-image-container img');
-        const ingredientTexts = document.querySelectorAll('.ingredient-text-container .ingredient-info');
-
-        ingredientSelectors.forEach(selector => {
-            selector.addEventListener('click', () => {
-                const targetIngredient = selector.dataset.ingredient;
-
-                // Update active state for the selector list
-                ingredientSelectors.forEach(item => item.classList.remove('active'));
-                selector.classList.add('active');
-
-                // Update active state for images
-                ingredientImages.forEach(img => {
-                    img.classList.toggle('active', img.dataset.image === targetIngredient);
-                });
-
-                // Update active state for text descriptions
-                ingredientTexts.forEach(text => {
-                    text.classList.toggle('active', text.dataset.text === targetIngredient);
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === tabId) {
+                        content.classList.add('active');
+                    }
                 });
             });
         });
-    }
+    });
 
-    // ========== FADE-IN ON SCROLL LOGIC ==========
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {threshold: 0.1});
-    document.querySelectorAll('.fade-in-section').forEach(section => observer.observe(section));
-
-    // ========== NEW TESTIMONIAL SLIDER LOGIC (FIXED) ==========
+    // --- Testimonial Slider (Fixed for Responsiveness & Swipe) ---
     const slider = document.querySelector('.testimonial-slider');
     if (slider) {
         const slidesContainer = slider.querySelector('.slides-container');
-        const slides = Array.from(slider.querySelectorAll('.slide')); // Convert to array for easier manipulation
+        const slides = Array.from(slider.querySelectorAll('.slide'));
         const prevBtn = slider.querySelector('.prev-btn');
         const nextBtn = slider.querySelector('.next-btn');
         const dotsContainer = slider.querySelector('.dots-container');
         let currentIndex = 0;
         let slideInterval;
 
-        // --- CRITICAL FIX: Set slidesContainer width based on total slides ---
-        slidesContainer.style.width = `${slides.length * 100}%`;
+        // Swipe/Touch variables
+        let startX = 0;
+        let endX = 0;
+        let isDragging = false;
+        let startTransform = 0;
+        const SWIPE_THRESHOLD = 50; // Minimum pixels to swipe to trigger change
 
-        // --- Added for responsive recalculation (optional but good practice) ---
-        function setSlideWidth() {
-            slides.forEach(slide => {
-                slide.style.width = `${slider.offsetWidth}px`; // Set each slide's width to the slider's visible width
+        if (slides.length > 0) {
+            let dots = [];
+
+            // Create navigation dots
+            slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.classList.add('dot');
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dot.setAttribute('role', 'tab');
+                dot.addEventListener('click', () => goToSlide(i));
+                if (dotsContainer) dotsContainer.appendChild(dot);
+                dots.push(dot);
             });
-            slidesContainer.style.transform = `translateX(-${currentIndex * slider.offsetWidth}px)`; // Adjust position
-        }
 
-        // Initial width setting
-        setSlideWidth();
-        // Recalculate on window resize
-        window.addEventListener('resize', setSlideWidth);
-        // --- END CRITICAL FIX ---
+            function updateSlider() {
+                // Ensure we only proceed if slides exist and have a measurable width
+                if (slides.length === 0 || slides[0].offsetWidth === 0) return;
 
+                const slideWidth = slides[0].offsetWidth;
 
-        // Create dots
-        slides.forEach((_, i) => {
-            const dot = document.createElement('button');
-            dot.classList.add('dot');
-            if (i === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => {
-                goToSlide(i);
+                // CRITICAL ALIGNMENT FIX: Use Math.round() or force pixel alignment
+                // to prevent sub-pixel issues causing partial content visibility.
+                const newTransform = -Math.round(slideWidth * currentIndex);
+                slidesContainer.style.transform = `translateX(${newTransform}px)`;
+
+                if(dots.length > 0) {
+                    dots.forEach(dot => {
+                        dot.classList.remove('active');
+                        dot.removeAttribute('aria-selected');
+                    });
+                    dots[currentIndex].classList.add('active');
+                    dots[currentIndex].setAttribute('aria-selected', 'true');
+
+                    slides.forEach((slide, index) => {
+                       const label = `${index + 1} of ${slides.length}`;
+                       slide.setAttribute('aria-label', label);
+                    });
+                }
+            }
+
+            function goToSlide(index) {
+                currentIndex = (index + slides.length) % slides.length;
+                updateSlider();
                 resetInterval();
+            }
+
+            function startInterval() {
+                clearInterval(slideInterval);
+                slideInterval = setInterval(() => {
+                    goToSlide(currentIndex + 1);
+                }, 5000);
+            }
+
+            function resetInterval() {
+                startInterval();
+            }
+
+            // --- Touch/Swipe Handlers ---
+
+            function getTouchCoord(e) {
+                return e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+            }
+
+            // Starts the drag/swipe operation (Mouse and Touch Down)
+            const handleDragStart = (e) => {
+                isDragging = true;
+                // Determine start position based on event type
+                startX = e.type.startsWith('touch') ? getTouchCoord(e.touches) : e.clientX;
+
+                // Temporarily disable CSS transition for smoother dragging
+                slidesContainer.style.transition = 'none';
+
+                // Parse current transform value
+                const currentTransform = slidesContainer.style.transform;
+                const match = currentTransform.match(/translateX\(([-.\d]+)px\)/);
+                startTransform = match ? parseFloat(match[1]) : 0;
+            };
+
+            slidesContainer.addEventListener('mousedown', handleDragStart);
+            slidesContainer.addEventListener('touchstart', handleDragStart);
+
+            // Moves the slide while dragging/swiping (Mouse and Touch Move)
+            const handleDragMove = (e) => {
+                if (!isDragging) return;
+                // Prevent vertical scrolling interference
+                if (e.cancelable) e.preventDefault();
+
+                endX = e.type.startsWith('touch') ? getTouchCoord(e.touches) : e.clientX;
+                const moveDistance = endX - startX;
+                slidesContainer.style.transform = `translateX(${startTransform + moveDistance}px)`;
+            };
+
+            window.addEventListener('mousemove', handleDragMove);
+            window.addEventListener('touchmove', handleDragMove, { passive: false }); // Use non-passive for preventDefault
+
+            // Ends the drag/swipe operation (Mouse and Touch Up)
+            const handleDragEnd = () => {
+                if (!isDragging) return;
+                isDragging = false;
+
+                // Re-enable transition after processing the drag
+                slidesContainer.style.transition = 'transform 0.5s ease-in-out';
+
+                const moveDistance = endX - startX;
+
+                // If the movement was significant, change slide
+                if (moveDistance > SWIPE_THRESHOLD) {
+                    goToSlide(currentIndex - 1); // Swipe right (previous slide)
+                } else if (moveDistance < -SWIPE_THRESHOLD) {
+                    goToSlide(currentIndex + 1); // Swipe left (next slide)
+                } else {
+                    // Force snap back to the EXACT current slide position
+                    updateSlider();
+                }
+
+                // Reset drag values
+                startX = 0;
+                endX = 0;
+                resetInterval();
+            };
+
+            window.addEventListener('mouseup', handleDragEnd);
+            window.addEventListener('touchend', handleDragEnd);
+            window.addEventListener('mouseleave', handleDragEnd);
+
+            // --- Initialization and Events ---
+
+            if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+            if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+
+            // CRITICAL: Re-run updateSlider on window resize to instantly fix slide position
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                // Throttle the resize event for performance
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    slidesContainer.style.transition = 'none';
+                    updateSlider();
+                    // Re-enable transition
+                    setTimeout(() => slidesContainer.style.transition = 'transform 0.5s ease-in-out', 50);
+                }, 100);
             });
-            dotsContainer.appendChild(dot);
-        });
-        const dots = dotsContainer.querySelectorAll('.dot');
 
-        function goToSlide(index) {
-            if (index < 0) index = slides.length - 1;
-            if (index >= slides.length) index = 0;
+            // Pause on hover
+            slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
+            slider.addEventListener('mouseleave', startInterval);
 
-            // --- CRITICAL FIX: Use slider.offsetWidth for accurate pixel-based transform ---
-            slidesContainer.style.transform = `translateX(-${currentIndex * slider.offsetWidth}px)`;
-            currentIndex = index;
-
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[currentIndex].classList.add('active');
+            // Initialize slider
+            goToSlide(0);
         }
-
-        function startInterval() {
-            slideInterval = setInterval(() => {
-                goToSlide(currentIndex + 1);
-            }, 5000); // Change slide every 5 seconds
-        }
-
-        function resetInterval() {
-            clearInterval(slideInterval);
-            startInterval();
-        }
-
-        nextBtn.addEventListener('click', () => {
-            goToSlide(currentIndex + 1);
-            resetInterval();
-        });
-
-        prevBtn.addEventListener('click', () => {
-            goToSlide(currentIndex - 1);
-            resetInterval();
-        });
-
-        slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
-        slider.addEventListener('mouseleave', () => startInterval());
-
-        // Initial slide display
-        goToSlide(currentIndex);
-        startInterval();
     }
+
+
+    // --- Fade-in sections on scroll ---
+    let observer;
+    function observeSections() {
+        const sections = document.querySelectorAll('.fade-in-section');
+
+        if (observer) observer.disconnect();
+
+        observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        sections.forEach(section => {
+            section.classList.remove('is-visible');
+            observer.observe(section);
+        });
+    }
+
+    observeSections();
 });
