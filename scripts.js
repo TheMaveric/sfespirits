@@ -44,31 +44,60 @@ document.addEventListener('DOMContentLoaded', function () {
     const pageLinks = document.querySelectorAll('.nav-link');
     const pages = document.querySelectorAll('.page-content');
 
+    // General function to handle page switching, used by both nav links and the logo
+    function switchToPage(targetPageId) {
+        // Hide all pages
+        pages.forEach(page => {
+            page.style.display = 'none';
+        });
+
+        // Show the target page
+        const targetPage = document.getElementById(targetPageId);
+        if (targetPage) {
+            targetPage.style.display = 'block';
+        }
+
+        // Update active link in navigation
+        pageLinks.forEach(nav => nav.classList.remove('active-link'));
+        const activeLink = document.querySelector(`.nav-link[data-page="${targetPageId}"]`);
+        if (activeLink) {
+            activeLink.classList.add('active-link');
+        }
+
+        // Scroll to top and trigger animations for the new page
+        window.scrollTo(0, 0);
+        observeSections();
+    }
+
+
     pageLinks.forEach(link => {
         link.addEventListener('click', function (e) {
             e.preventDefault();
             const targetPageId = this.getAttribute('data-page');
-
-            // Hide all pages
-            pages.forEach(page => {
-                page.style.display = 'none';
-            });
-
-            // Show the target page
-            const targetPage = document.getElementById(targetPageId);
-            if (targetPage) {
-                targetPage.style.display = 'block';
-            }
-
-            // Update active link in navigation
-            pageLinks.forEach(nav => nav.classList.remove('active-link'));
-            this.classList.add('active-link');
-
-            // Scroll to top and trigger animations for the new page
-            window.scrollTo(0, 0);
-            observeSections();
+            switchToPage(targetPageId);
+            closeMobileMenu(); // Ensure mobile menu closes after clicking a link
         });
     });
+
+    // --- NEW: Logo Click Functionality (Go to Home) ---
+    const headerLogo = document.querySelector('.header-logo');
+    const homePageId = 'home-page';
+
+    if (headerLogo) {
+        headerLogo.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default anchor behavior
+
+            const currentPage = document.querySelector('.page-content[style*="display: block"]');
+
+            // Only switch page if we are not already on the home page
+            if (currentPage && currentPage.id !== homePageId) {
+                switchToPage(homePageId);
+                closeMobileMenu(); // Close menu if clicking the logo while mobile menu is open
+            }
+        });
+    }
+    // --- END NEW FUNCTIONALITY ---
+
 
     // --- Scoped Tabs Functionality ---
     const tabContainers = document.querySelectorAll('.tabs-container');

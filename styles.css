@@ -145,16 +145,83 @@ section {
                 0 0 5px rgba(212, 175, 55, 0.1); /* Gold glow */
 }
 
+/* General hero image styling */
 .hero-image {
-    max-width: 90%;
-    margin: 30px auto 40px auto;
-    border-radius: 8px;
-    /* More pronounced 3D effect on images */
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 10px #d4af3730;
-    transition: transform 0.5s ease-out;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    /* Revert to initial/unset */
+    object-fit: initial;
+    transition: transform 0.3s ease;
 }
 .hero-image:hover {
     transform: scale(1.02); /* Slight lift on hover */
+}
+
+/* Container for side-by-side images (General) */
+.image-pair {
+    display: flex;
+    gap: 20px; /* Space between the two images */
+    margin: 40px 0; /* Vertical spacing for the image block */
+    justify-content: center; /* Center the pair horizontally */
+    /* FINAL ALIGNMENT: Align all images to the top, allowing for different heights */
+    align-items: flex-start;
+    /* FINAL FIX: Ensure the parent container does not enforce a height */
+    height: auto;
+}
+.image-pair .hero-image {
+    border-radius: 8px; /* Soft edges */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+    /* Ensure child images dynamically scale (no fixed height, no background color) */
+    height: auto;
+    object-fit: initial;
+    background-color: transparent;
+}
+
+
+/* === HOME PAGE IMAGE 1ST PAIR (Unequal Aspect Ratio - Whiskey) === */
+.header .image-pair:nth-of-type(1) {
+    /* REMOVED: fixed height for dynamic scaling */
+    height: auto;
+}
+.header .image-pair:nth-of-type(1) .hero-image:nth-child(1) {
+    /* Wide image (left) - Image 7.jpg */
+    width: 75%;
+    max-width: 800px;
+    height: auto; /* Dynamic scaling */
+    object-fit: initial; /* Dynamic scaling */
+    background-color: transparent;
+}
+.header .image-pair:nth-of-type(1) .hero-image:nth-child(2) {
+    /* Narrower/Taller image (right) - Image 8.jpg */
+    width: 25%;
+    max-width: 400px;
+    height: auto; /* Dynamic scaling */
+    object-fit: initial; /* Dynamic scaling */
+    background-color: transparent;
+}
+
+
+/* === HOME PAGE IMAGE 2ND PAIR (Unequal Aspect Ratio - Gin) === */
+.header .image-pair:nth-of-type(2) {
+    /* REMOVED: fixed height for dynamic scaling */
+    height: auto;
+}
+.header .image-pair:nth-of-type(2) .hero-image:nth-child(1) {
+    /* Gin image 1 */
+    width: 61%;
+    max-width: 550px;
+    height: auto; /* Dynamic scaling */
+    object-fit: initial; /* Dynamic scaling */
+    background-color: transparent;
+}
+.header .image-pair:nth-of-type(2) .hero-image:nth-child(2) {
+    /* Gin image 2 */
+    width: 39%;
+    max-width: 550px;
+    height: auto; /* Dynamic scaling */
+    object-fit: initial; /* Dynamic scaling */
+    background-color: transparent;
 }
 
 
@@ -326,14 +393,94 @@ cite {
     margin-bottom: 40px;
 }
 
+/* === HARBOUR COLLECTION IMAGE STYLING (MANAGEABLE SIZE) === */
 .spirit-section .large-spirit-image {
-    max-width: 100%;
+    /* FINAL FIX: Set a consistent, manageable height */
+    max-width: 900px; /* Constrain the maximum width */
+    margin: 0 auto 40px auto; /* Center the image and add margin below */
+    /* Use 'contain' to ensure full product visibility without cropping */
+    border-radius: 8px; /* Add slight rounding */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    transition: none; /* Disable hover effect for large images */
+    filter: brightness(1); /* Ensure full brightness */
+    background-color: #1a1a1a; /* Fill unused space with section background color */
 }
 
-/* Ingredient/Botanical Lists - Flex/Grid Modernization */
+/* Gin Content (Side-by-Side Pair) */
+#gin-content .spirit-section {
+    display: flex;
+    flex-wrap: wrap; /* Allows stacking on mobile */
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+}
+#gin-content .spirit-section h3,
+#gin-content .spirit-section p,
+#gin-content .spirit-section h4 {
+    flex-basis: 100%; /* Ensure text elements take full width */
+}
+
+/* Target the first image in the Gin content */
+#gin-content .spirit-section .large-spirit-image:nth-of-type(1) {
+    width: calc(58.5% - 10px); /* Custom width split, minus half the gap */
+    max-width: 700px;
+    height: auto; /* Dynamic height based on width */
+    margin: 0 0 40px 0;
+    object-fit: initial;
+}
+
+/* Target the second image in the Gin content */
+#gin-content .spirit-section .large-spirit-image:nth-of-type(2) {
+    width: calc(41.5% - 10px); /* Custom width split, minus half the gap */
+    max-width: 550px;
+    height: auto; /* Dynamic height based on width */
+    margin: 0 0 40px 0;
+    object-fit: initial;
+}
+/* === END HARBOUR COLLECTION IMAGE STYLING === */
+
+
+/* --- New CSS for Ingredients Layout (Image Left, Text Right) --- */
+.ingredients-flex-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    display: flex;
+    gap: 40px;
+    align-items: flex-start; /* Aligns the top edges of the image and text */
+    text-align: left;
+}
+
+.ingredients-image-flex {
+    /* Image takes up about 35% of the container width */
+    width: 35%;
+    max-width: 480px;
+    height: auto; /* FIX: Dynamic height to eliminate black bars */
+    object-fit: initial; /* FIX: Dynamic scaling */
+    border-radius: 8px;
+    margin: 0;
+    flex-shrink: 0;
+    background-color: transparent; /* FIX: Remove background to avoid bar color */
+}
+
 .ingredients-list.new-layout {
-    max-width: 900px;
-    margin: 60px auto;
+    /* Ingredients list takes up 65% of the container width (more text room) */
+    width: 65%;
+    max-width: none;
+    margin: 0;
+    padding-top: 5px;
+
+    /* Ensure the grid of ingredients within the list flows correctly */
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+/* --- End New CSS for Ingredients Layout --- */
+
+
+/* Ingredient/Botanical Lists - Flex/Grid Modernization (Original .ingredients-list rules for global use) */
+/* The rules below are correctly overridden by .ingredients-list.new-layout inside the flex container,
+   but we'll adjust the margin to ensure the structure is clean. */
+.ingredients-list.new-layout {
+    margin: 0; /* Clear default margin */
     display: grid;
     /* Two columns on desktop */
     grid-template-columns: 1fr 1fr;
@@ -462,6 +609,12 @@ cite {
     transform: translateY(0);
 }
 
+/* In styles.css */
+.highlight-sfe {
+    font-weight: bold !important; /* Enforce bold */
+    text-decoration: underline !important; /* Enforce underline */
+}
+
 /* ======== Responsive Styles (Adjusted) ======== */
 @media (max-width: 1024px) {
     #wrapper {
@@ -474,11 +627,6 @@ cite {
     }
 }
 
-/* In styles.css */
-.highlight-sfe {
-    font-weight: bold !important; /* Enforce bold */
-    text-decoration: underline !important; /* Enforce underline */
-}
 
 @media (max-width: 768px) {
     /* Mobile Navigation */
@@ -507,14 +655,75 @@ cite {
         margin-bottom: 20px;
     }
 
+    /* === HOME PAGE IMAGE STYLES FOR MOBILE (Stack all pairs) === */
+    /* FIX: Clear fixed heights for mobile stacking */
+    .header .image-pair:nth-of-type(1),
+    .header .image-pair:nth-of-type(2) {
+        height: auto;
+    }
+
+    .image-pair {
+        flex-direction: column; /* Stack vertically on mobile */
+        gap: 0;
+        margin: 25px 0;
+    }
+
+    .image-pair .hero-image {
+        width: 100% !important; /* Full width when stacked */
+        max-width: none;
+        /* FINAL MOBILE FIX: Set height to auto for proportional scaling on mobile (no fixed 250px height) */
+        height: auto !important;
+        margin-bottom: 15px; /* Spacing between the stacked images */
+        border-radius: 5px;
+        /* FINAL MOBILE FIX: Ensure proportional scaling (no crop/zoom) */
+        object-fit: initial !important;
+        background-color: transparent !important;
+    }
+
+    /* === HARBOUR COLLECTION IMAGE STYLING FOR MOBILE === */
+    .spirit-section .large-spirit-image {
+        /* Mobile height for the single whiskey image */
+        height: 400px;
+        margin-bottom: 20px;
+    }
+
+    #gin-content .spirit-section {
+        /* Clear flex layout for the Gin pair and stack images */
+        flex-direction: column;
+        gap: 0;
+    }
+    #gin-content .spirit-section .large-spirit-image {
+        width: 100%;
+        max-width: none;
+        height: 350px; /* Shorter stacked height */
+        margin-bottom: 15px;
+        object-fit: contain; /* Ensure full bottle is visible on mobile */
+    }
+    /* === END HARBOUR COLLECTION IMAGE STYLING FOR MOBILE === */
+
+    /* === Mobile Adjustment for Ingredients Flex === */
+    .ingredients-flex-container {
+        flex-direction: column; /* Stack image and text vertically on mobile */
+        gap: 20px;
+        align-items: center;
+    }
+
+    .ingredients-image-flex {
+        width: 100%; /* Image takes full width when stacked */
+        height: 350px; /* Give it a fixed height on mobile */
+        object-fit: cover;
+    }
+
+    .ingredients-list.new-layout {
+        width: 100%;
+        /* Change from 2-column grid to 1-column grid on small screens */
+        grid-template-columns: 1fr;
+    }
+    /* === End Mobile Adjustment for Ingredients Flex === */
+
+
     /* Ensure blockquote text is fully constrained on mobile */
         blockquote {
-            /*
-             * CRITICAL FIX: The blockquote element has a fixed max-width in desktop styles
-             * that can be too large for a narrow mobile screen (e.g., max-width: 65ch).
-             * We need to override it to be 100% (or nearly 100%) of its parent container.
-             * The margin: 0 auto; centers it inside the slide.
-            */
             max-width: 95%; /* Adjust to ensure it uses the full width of the slide */
             margin-left: auto;
             margin-right: auto;
@@ -548,4 +757,3 @@ cite {
         text-align: center !important;
     }
 }
-/* File ends here */
