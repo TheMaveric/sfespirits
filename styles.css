@@ -1,4 +1,3 @@
-/* Modern CSS Reset */
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -12,7 +11,6 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li, blockquote, cite {
     padding: 0;
 }
 
-/* Core Body & Typography Styles */
 body {
     font-family: 'Lato', sans-serif;
     /* Use a very dark, subtle charcoal background */
@@ -25,16 +23,15 @@ body {
 }
 
 #wrapper {
-    max-width: 1400px; /* Increased max width for a grander feel */
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 40px; /* Increased padding */
+    padding: 0 40px;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif;
     color: #ffffff;
     line-height: 1.2;
-    /* Subtle text shadow for depth */
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
 }
 
@@ -47,10 +44,10 @@ h6 { font-size: 1.2rem; margin: 0 0 8px 0; color: #d4af37; }
 
 
 p {
-    max-width: 80ch; /* Increased line length for more fluid reading */
+    max-width: 80ch;
     margin: 0 auto 20px auto;
     font-size: clamp(1rem, 2.5vw, 1.15rem);
-    color: #c0c0c0; /* Lighter text for contrast */
+    color: #c0c0c0;
 }
 
 img {
@@ -59,11 +56,9 @@ img {
     display: block;
 }
 
-/* --- Header and Navigation --- */
 #main-navigation {
     padding: 30px 0;
     border-bottom: 1px solid #333;
-    /* Adding a subtle metallic gradient to the border */
     border-image: linear-gradient(to right, transparent, #d4af3740, transparent) 1;
 }
 
@@ -75,13 +70,13 @@ img {
 }
 
 .header-logo img {
-    height: 50px; /* Slightly larger logo */
+    height: 50px;
 }
 
 .navbar-nav {
     display: flex;
     list-style: none;
-    gap: 40px; /* Increased spacing */
+    gap: 40px;
 }
 
 .nav-link {
@@ -96,7 +91,7 @@ img {
 }
 
 .nav-link:hover {
-    color: #fff; /* White on hover */
+    color: #fff;
     transform: translateY(-2px);
 }
 
@@ -104,13 +99,12 @@ img {
     color: #d4af37;
 }
 
-/* Subtle, more integrated gold line */
 .nav-link.active-link::after {
     content: '';
     position: absolute;
     bottom: -5px;
     left: 20%;
-    width: 60%; /* Shorter line */
+    width: 60%;
     height: 2px;
     background-color: #d4af37;
     box-shadow: 0 0 8px #d4af37;
@@ -122,35 +116,31 @@ img {
     background: none;
     border: none;
     color: #e0e0e0;
-    font-size: 30px; /* Larger icon */
+    font-size: 30px;
     cursor: pointer;
     z-index: 1001;
     padding: 10px;
 }
 
-/* --- Main Content & Sections --- */
 .page-content {
     padding: 60px 0;
 }
 
 section {
     text-align: center;
-    padding: 80px 40px; /* Increased padding */
+    padding: 80px 40px;
     margin-bottom: 40px;
-    background-color: #1a1a1a; /* Lighter background for sections */
+    background-color: #1a1a1a;
     border-radius: 12px;
-    /* Luxury Border Effect (Subtle bevel and inner shadow) */
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5),
                 0 15px 40px rgba(0, 0, 0, 0.7),
-                0 0 5px rgba(212, 175, 55, 0.1); /* Gold glow */
+                0 0 5px rgba(212, 175, 55, 0.1);
 }
 
-/* General hero image styling */
 .hero-image {
     width: 100%;
     height: auto;
     max-width: 100%;
-    /* Revert to initial/unset */
     object-fit: initial;
     transition: transform 0.3s ease;
 }
@@ -158,34 +148,26 @@ section {
     transform: scale(1.02); /* Slight lift on hover */
 }
 
-/* Container for side-by-side images (General) */
 .image-pair {
     display: flex;
     gap: 20px; /* Space between the two images */
     margin: 40px 0; /* Vertical spacing for the image block */
     justify-content: center; /* Center the pair horizontally */
-    /* FINAL ALIGNMENT: Align all images to the top, allowing for different heights */
     align-items: flex-start;
-    /* FINAL FIX: Ensure the parent container does not enforce a height */
     height: auto;
 }
 .image-pair .hero-image {
     border-radius: 8px; /* Soft edges */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
-    /* Ensure child images dynamically scale (no fixed height, no background color) */
     height: auto;
     object-fit: initial;
     background-color: transparent;
 }
 
-
-/* === HOME PAGE IMAGE 1ST PAIR (Unequal Aspect Ratio - Whiskey) === */
 .header .image-pair:nth-of-type(1) {
-    /* REMOVED: fixed height for dynamic scaling */
     height: auto;
 }
 .header .image-pair:nth-of-type(1) .hero-image:nth-child(1) {
-    /* Wide image (left) - Image 7.jpg */
     width: 75%;
     max-width: 800px;
     height: auto; /* Dynamic scaling */
@@ -193,7 +175,6 @@ section {
     background-color: transparent;
 }
 .header .image-pair:nth-of-type(1) .hero-image:nth-child(2) {
-    /* Narrower/Taller image (right) - Image 8.jpg */
     width: 25%;
     max-width: 400px;
     height: auto; /* Dynamic scaling */
@@ -202,13 +183,10 @@ section {
 }
 
 
-/* === HOME PAGE IMAGE 2ND PAIR (Unequal Aspect Ratio - Gin) === */
 .header .image-pair:nth-of-type(2) {
-    /* REMOVED: fixed height for dynamic scaling */
     height: auto;
 }
 .header .image-pair:nth-of-type(2) .hero-image:nth-child(1) {
-    /* Gin image 1 */
     width: 61%;
     max-width: 550px;
     height: auto; /* Dynamic scaling */
@@ -216,16 +194,13 @@ section {
     background-color: transparent;
 }
 .header .image-pair:nth-of-type(2) .hero-image:nth-child(2) {
-    /* Gin image 2 */
     width: 39%;
     max-width: 550px;
     height: auto; /* Dynamic scaling */
-    object-fit: initial; /* Dynamic scaling */
+    object-fit: initial;
     background-color: transparent;
 }
 
-
-/* --- Feature Section & Tabs (Enhanced) --- */
 .tabs-container {
     margin-bottom: 40px;
     display: flex;
@@ -286,7 +261,6 @@ section {
     box-sizing: border-box;
     padding: 30px;
     flex-shrink: 0;
-    /* Background for the slide itself */
     background-color: #121212;
     border-radius: 8px;
 }
@@ -294,17 +268,12 @@ section {
 blockquote {
     font-size: clamp(1.2rem, 3vw, 1.4rem);
     font-style: italic;
-    /* Enhanced border with gradient */
     border-left: 5px solid;
     border-image: linear-gradient(to bottom, #d4af37, #d4af3730) 1;
     padding-left: 30px;
     color: #e0e0e0;
-
-    /* Ensure the text breaks and wraps normally */
     white-space: normal;
     word-wrap: break-word; /* Ensure extremely long words break */
-
-    /* Constraint for better reading flow, already set in previous versions: */
     max-width: 65ch;
     margin: 0 auto 15px auto; /* Centering and adding bottom margin */
 }
@@ -422,7 +391,7 @@ cite {
 
 /* Target the first image in the Gin content */
 #gin-content .spirit-section .large-spirit-image:nth-of-type(1) {
-    width: calc(58.5% - 10px); /* Custom width split, minus half the gap */
+    width: 58.5%; /* Custom width split, minus half the gap */
     max-width: 700px;
     height: auto; /* Dynamic height based on width */
     margin: 0 0 40px 0;
@@ -431,7 +400,7 @@ cite {
 
 /* Target the second image in the Gin content */
 #gin-content .spirit-section .large-spirit-image:nth-of-type(2) {
-    width: calc(41.5% - 10px); /* Custom width split, minus half the gap */
+    width: 41.5%; /* Custom width split, minus half the gap */
     max-width: 550px;
     height: auto; /* Dynamic height based on width */
     margin: 0 0 40px 0;
@@ -655,6 +624,12 @@ cite {
         margin-bottom: 20px;
     }
 
+    /* === CRITICAL FIX: HIDE TESTIMONIAL SECTION ON MOBILE === */
+    .feature-section.testimonial {
+        display: none;
+    }
+    /* ====================================================== */
+
     /* === HOME PAGE IMAGE STYLES FOR MOBILE (Stack all pairs) === */
     /* FIX: Clear fixed heights for mobile stacking */
     .header .image-pair:nth-of-type(1),
@@ -722,19 +697,37 @@ cite {
     /* === End Mobile Adjustment for Ingredients Flex === */
 
 
-    /* Ensure blockquote text is fully constrained on mobile */
-        blockquote {
-            max-width: 95%; /* Adjust to ensure it uses the full width of the slide */
-            margin-left: auto;
-            margin-right: auto;
-            /* Reduce left padding for more horizontal space on small screens */
-            padding-left: 15px;
-        }
+    /* Note: Testimonial slider styles are effectively overridden by the display: none above.
+       They are kept here to be ready if the section is re-enabled on mobile later. */
+    .testimonial-slider {
+        padding: 0;
+        max-width: 100%;
+        overflow: hidden;
+    }
 
-        /* Ensure the slide itself has no excessive padding that might push content out */
-        .slide {
-            padding: 20px 5px; /* Slightly reduce side padding if necessary */
-        }
+    .slide {
+        padding: 20px 65px;
+    }
+
+    blockquote {
+        max-width: 100%;
+        margin: 0 auto 15px auto;
+        padding-left: 15px;
+    }
+
+    .slider-btn {
+        background: rgba(255, 255, 255, 0.25);
+        width: 45px;
+        height: 45px;
+        padding: 8px;
+    }
+
+    .slider-btn:hover {
+        transform: translateY(-50%) scale(1.05);
+    }
+
+    .prev-btn { left: 0px; }
+    .next-btn { right: 0px; }
 
     /* Spirits Page Mobile Adjustments */
     .botanical-item.horizontal-item,
