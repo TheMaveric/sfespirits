@@ -99,6 +99,57 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- END NEW FUNCTIONALITY ---
 
 
+    // --- Home Page Image Slider Logic (New) ---
+    const imageSlider = document.querySelector('.image-slider');
+    if (imageSlider) {
+        const slides = imageSlider.querySelectorAll('.slide');
+        const prevButton = imageSlider.querySelector('.prev-btn');
+        const nextButton = imageSlider.querySelector('.next-btn');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            // Remove active class from all slides
+            slides.forEach(slide => {
+                slide.classList.remove('active-slide');
+                // FIX: Removed dynamic position change
+            });
+
+            // Handle wrapping (looping)
+            if (index < 0) {
+                index = slides.length - 1;
+            } else if (index >= slides.length) {
+                index = 0;
+            }
+
+            // Update current slide index and set active class
+            currentSlide = index;
+            slides[currentSlide].classList.add('active-slide');
+            // FIX: Removed dynamic position change
+
+
+            // Update Aria label for accessibility (e.g., "1 of 2")
+            slides[currentSlide].setAttribute('aria-label', `${currentSlide + 1} of ${slides.length}`);
+        }
+
+        // Initialize the first slide
+        setTimeout(() => showSlide(currentSlide), 0);
+
+        // Event listeners for navigation
+        if (prevButton) {
+            prevButton.addEventListener('click', () => {
+                showSlide(currentSlide - 1);
+            });
+        }
+
+        if (nextButton) {
+            nextButton.addEventListener('click', () => {
+                showSlide(currentSlide + 1);
+            });
+        }
+    }
+    // --- End Home Page Image Slider Logic ---
+
+
     // --- Scoped Tabs Functionality ---
     const tabContainers = document.querySelectorAll('.tabs-container');
     tabContainers.forEach(container => {

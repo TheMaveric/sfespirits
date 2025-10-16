@@ -375,36 +375,18 @@ cite {
     background-color: #1a1a1a; /* Fill unused space with section background color */
 }
 
-/* Gin Content (Side-by-Side Pair) */
-#gin-content .spirit-section {
-    display: flex;
-    flex-wrap: wrap; /* Allows stacking on mobile */
-    justify-content: center;
-    align-items: flex-start;
-    gap: 20px;
-}
-#gin-content .spirit-section h3,
-#gin-content .spirit-section p,
-#gin-content .spirit-section h4 {
-    flex-basis: 100%; /* Ensure text elements take full width */
-}
-
-/* Target the first image in the Gin content */
-#gin-content .spirit-section .large-spirit-image:nth-of-type(1) {
-    width: 58.5%; /* Custom width split, minus half the gap */
-    max-width: 700px;
-    height: auto; /* Dynamic height based on width */
-    margin: 0 0 40px 0;
-    object-fit: initial;
-}
-
-/* Target the second image in the Gin content */
-#gin-content .spirit-section .large-spirit-image:nth-of-type(2) {
-    width: 41.5%; /* Custom width split, minus half the gap */
-    max-width: 550px;
-    height: auto; /* Dynamic height based on width */
-    margin: 0 0 40px 0;
-    object-fit: initial;
+/* === Gin Specific Image Sizing (Max Height for Tall Bottle Shots) === */
+.gin-spirit-image {
+    max-width: 900px;
+    /* Limit the vertical length */
+    max-height: 600px;
+    /* Ensure object-fit: contain (inherited from hero-image/spirit-image if defined)
+       or explicitly set, but object-fit: initial is enough if using max-height. */
+    object-fit: contain;
+    margin: 0 auto 40px auto; /* Center and spacing */
+    /* Ensure the background matches the section */
+    background-color: #1a1a1a;
+    border-radius: 8px;
 }
 /* === END HARBOUR COLLECTION IMAGE STYLING === */
 
@@ -663,18 +645,20 @@ cite {
     }
 
     #gin-content .spirit-section {
-        /* Clear flex layout for the Gin pair and stack images */
-        flex-direction: column;
+        /* FIX: Remove flex-direction: column; to rely on flow */
+        display: block;
         gap: 0;
     }
-    #gin-content .spirit-section .large-spirit-image {
+    #gin-content .spirit-section .gin-spirit-image {
+        /* Set a shorter height for mobile */
+        max-height: 350px;
+        height: 350px; /* Forces height to be predictable */
         width: 100%;
-        max-width: none;
-        height: 350px; /* Shorter stacked height */
         margin-bottom: 15px;
-        object-fit: contain; /* Ensure full bottle is visible on mobile */
+        object-fit: contain;
     }
     /* === END HARBOUR COLLECTION IMAGE STYLING FOR MOBILE === */
+
 
     /* === Mobile Adjustment for Ingredients Flex === */
     .ingredients-flex-container {
@@ -750,3 +734,108 @@ cite {
         text-align: center !important;
     }
 }
+
+
+/* --- New CSS for Home Page Image Slider --- */
+.image-slider {
+    position: relative; /* Needed to position the buttons */
+    max-width: 900px; /* Constrain the overall width of the slider */
+    margin: 40px auto; /* Vertical spacing and centering */
+    overflow: hidden; /* Hide slides that are out of view */
+    border-radius: 0;
+    box-shadow: none;
+    /* min-height removed */
+}
+
+.image-slider .slides-container {
+    /* To stack images perfectly on top of each other */
+    position: relative;
+    width: 100%;
+    /* Changing from 16:9 (56.25%) to 4:3 (75%) to better fit the vertical image. */
+    padding-top: 100%;
+    height: 0;
+}
+
+.image-slider .slide {
+    position: absolute; /* Keep ALL slides absolute */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Now inherits the calculated height from padding-top */
+    opacity: 0; /* Hidden by default */
+    z-index: 1; /* Default stack order */
+    transition: opacity 0.5s ease-in-out; /* Smooth fade effect */
+}
+
+.image-slider .slide.active-slide {
+    /* The CSS fix: Only control visibility and z-index, not position */
+    opacity: 1; /* Make the active slide visible */
+    z-index: 2; /* Bring active slide to the front */
+}
+
+/* Ensure the images inside the slides fill the space correctly */
+.image-slider .hero-image {
+    width: 100%;
+    height: 100%; /* Changed to 100% to fill the new container height */
+    display: block;
+    /* The image is contained, allowing bars */
+    object-fit: contain;
+    border-radius: 0; /* No need for border radius on inner image */
+    transition: none; /* No hover effect inside the slider */
+    transform: none;
+    background-color: #1a1a1a;
+}
+
+/* Re-use and adjust the testimonial slider button styles for consistency */
+.image-slider .slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 1.5rem;
+    line-height: 1;
+    border-radius: 50%;
+    transition: background 0.3s;
+    /* Use the same size and hover effect as testimonial buttons for consistency */
+    width: 45px;
+    height: 45px;
+}
+
+.image-slider .slider-btn:hover {
+    background: #d4af37;
+    color: #0a0a0a;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.image-slider .prev-btn {
+    left: 15px;
+}
+
+.image-slider .next-btn {
+    right: 15px;
+}
+
+/* Override mobile-specific styles for the new slider to work correctly */
+@media (max-width: 768px) {
+    /* The static image pair styles are now irrelevant, but we ensure the slider looks good */
+    .image-slider {
+        margin: 20px auto;
+        padding: 0;
+        max-width: 100%;
+    }
+
+    .image-slider .slider-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
+
+    .image-slider .prev-btn { left: 5px; }
+    .image-slider .next-btn { right: 5px; }
+}
+/* --- End New CSS for Home Page Image Slider --- */
