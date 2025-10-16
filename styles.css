@@ -1,3 +1,30 @@
+/* --- New CSS for Launch Banner --- */
+#launch-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* Use the gold color for maximum impact */
+    background-color: #d4af37;
+    color: #0a0a0a;
+    text-align: center;
+    padding: 10px 0;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 900;
+    z-index: 10000; /* Ensure it's above all other elements */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Adjust the main wrapper padding to prevent content being hidden behind the fixed banner */
+#wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    /* Increased top padding to push content below the 40px tall banner */
+    padding: 40px 40px 0;
+}
+/* --- End New CSS for Launch Banner --- */
+
+
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -22,11 +49,8 @@ body {
     overflow-x: hidden;
 }
 
-#wrapper {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px;
-}
+/* Updated wrapper padding moved to top of file for banner adjustment */
+
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif;
@@ -568,9 +592,7 @@ cite {
 
 /* ======== Responsive Styles (Adjusted) ======== */
 @media (max-width: 1024px) {
-    #wrapper {
-        padding: 0 20px;
-    }
+    /* Updated wrapper padding moved to top of file for banner adjustment */
 
     .ingredients-list.new-layout {
         /* Single column on smaller screens */
@@ -580,6 +602,8 @@ cite {
 
 
 @media (max-width: 768px) {
+    /* Updated wrapper padding moved to top of file for banner adjustment */
+
     /* Mobile Navigation */
     .navbar-nav {
             display: none; /* Hides desktop links when space is small */
