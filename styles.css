@@ -428,6 +428,19 @@ cite {
     background-color: #1a1a1a; /* Fill unused space with section background color */
 }
 
+.spirit-section .whiskey-spirit-image {
+    /* FINAL FIX: Set a consistent, manageable height */
+    max-width: 250px; /* Constrain the maximum width */
+    max-height: 400px;
+    margin: 0 auto 40px auto; /* Center the image and add margin below */
+    /* Use 'contain' to ensure full product visibility without cropping */
+    border-radius: 8px; /* Add slight rounding */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    transition: none; /* Disable hover effect for large images */
+    filter: brightness(1); /* Ensure full brightness */
+    background-color: #1a1a1a; /* Fill unused space with section background color */
+}
+
 /* === Gin Specific Image Sizing (Max Height for Tall Bottle Shots) === */
 .gin-spirit-image {
     max-width: 900px;
