@@ -165,9 +165,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.classList.add('active');
 
                 tabContents.forEach(content => {
+                    // Get the spirit section inside the tab content
+                    const spiritSection = content.querySelector('.spirit-section');
+
                     content.classList.remove('active');
+
+                    // FIX: Remove 'is-visible' from the old content to reset it for animation
+                    if (spiritSection) {
+                        spiritSection.classList.remove('is-visible');
+                    }
+
                     if (content.id === tabId) {
                         content.classList.add('active');
+
+                        // FIX: Immediately add 'is-visible' to the new content on click
+                        if (spiritSection) {
+                            spiritSection.classList.add('is-visible');
+                        }
                     }
                 });
             });
@@ -362,10 +376,36 @@ document.addEventListener('DOMContentLoaded', function () {
         }, { threshold: 0.2 });
 
         sections.forEach(section => {
-            section.classList.remove('is-visible');
-            observer.observe(section);
+            // Note: We intentionally DO NOT remove 'is-visible' here
+            // because we want sections that have been clicked (tabs)
+            // to remain visible. Only observe sections that need scrolling
+            // to be triggered.
+
+            // Re-apply observation to home page sections and any other content
+            // not controlled by the tabs.
+            if (!section.closest('.tab-content')) {
+                 section.classList.remove('is-visible');
+                 observer.observe(section);
+            }
         });
     }
 
     observeSections();
+
+// --- Initial Tab Load Fix ---
+    function initializeDefaultTab() {
+        const defaultTabContent = document.getElementById('whiskey-content');
+        if (defaultTabContent) {
+            // Note: 'active' class is already in the HTML, but we ensure the spirit section loads
+            // defaultTabContent.classList.add('active');
+            const spiritSection = defaultTabContent.querySelector('.spirit-section');
+            if (spiritSection) {
+                spiritSection.classList.add('is-visible');
+            }
+        }
+    }
+
+    // Call the function once all other setup is done
+    initializeDefaultTab();
+// --- End Initial Tab Load Fix ---
 });
