@@ -9,11 +9,23 @@
     color: #0a0a0a;
     text-align: center;
     padding: 10px 0;
-    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
     font-weight: 900;
+    /* FIX: Use 'Playfair Display' font to match 'The Harbour Collection' titles */
+    font-family: 'Playfair Display', serif;
+    text-transform: uppercase;
     z-index: 10000; /* Ensure it's above all other elements */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
+
+/* Adjust the main wrapper padding to prevent content being hidden behind the fixed banner */
+#wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    /* Increased top padding to push content below the 40px tall banner */
+    padding: 40px 40px 0;
+}
+/* --- End New CSS for Launch Banner --- */
 
 /* Adjust the main wrapper padding to prevent content being hidden behind the fixed banner */
 #wrapper {
@@ -62,7 +74,8 @@ h1, h2, h3, h4, h5, h6 {
 h1 { font-size: clamp(3rem, 6vw, 4.5rem); margin-bottom: 1.5rem; }
 h2 { font-size: clamp(2.2rem, 4.5vw, 3rem); margin-bottom: 2rem; color: #d4af37; }
 h3 { font-size: clamp(1.8rem, 3.8vw, 2.4rem); margin-bottom: 1.2rem; }
-h4 { font-size: clamp(1.4rem, 3vw, 1.8rem); margin-bottom: 1.8rem; color: #d4af37; }
+/* FIX: Adjust h4 margin-bottom to pull the heading closer to its content */
+h4 { font-size: clamp(1.4rem, 3vw, 1.8rem); margin-bottom: 1rem; color: #d4af37; }
 h5 { font-size: clamp(1.2rem, 2.5vw, 1.5rem); margin-bottom: 1rem; color: #d4af37; }
 h6 { font-size: 1.2rem; margin: 0 0 8px 0; color: #d4af37; }
 
@@ -167,6 +180,22 @@ section {
     max-width: 100%;
     object-fit: initial;
     transition: transform 0.3s ease;
+}
+
+.gin-image {
+    width: auto;
+    max-height: 800px;
+    max-width: 100%;
+    object-fit: initial;
+    transition: transform 0.3s ease;
+    /* FIX: Center block-level elements using margin */
+    margin-left: auto;
+    margin-right: auto;
+    /* Remove the non-functional flex/grid property */
+    /* justify-content: center; */
+}
+.gin-image:hover{
+    transform: scale(1.02);
 }
 .hero-image:hover {
     transform: scale(1.02); /* Slight lift on hover */
@@ -277,7 +306,7 @@ section {
 
 .slides-container {
     display: flex;
-    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother transition curve */
+    transition: transform 0.7s; /* Smoother transition curve */
 }
 
 .slide {
@@ -422,14 +451,15 @@ cite {
     display: flex;
     gap: 40px;
     align-items: flex-start; /* Aligns the top edges of the image and text */
+    /* FIX: Ensure content aligns to the left side of the flex container */
     text-align: left;
 }
 
 .ingredients-image-flex {
-    /* Image takes up about 35% of the container width */
+    /* FIX: Increase width from 25% to 35% for a larger image */
     width: 35%;
     max-width: 480px;
-    height: auto; /* FIX: Dynamic height to eliminate black bars */
+    max-height: 450px; /* FIX: Dynamic height to eliminate black bars */
     object-fit: initial; /* FIX: Dynamic scaling */
     border-radius: 8px;
     margin: 0;
@@ -438,14 +468,15 @@ cite {
 }
 
 .ingredients-list.new-layout {
-    /* Ingredients list takes up 65% of the container width (more text room) */
+    /* FIX: Decrease width from 75% to 65% to balance the layout with the larger image */
     width: 65%;
     max-width: none;
     margin: 0;
     padding-top: 5px;
 
     /* Ensure the grid of ingredients within the list flows correctly */
-    grid-template-columns: 1fr 1fr;
+    /* FIX: Change to 1-column layout for clearer reading */
+    grid-template-columns: 1fr;
     gap: 20px;
 }
 /* --- End New CSS for Ingredients Layout --- */
@@ -457,8 +488,8 @@ cite {
 .ingredients-list.new-layout {
     margin: 0; /* Clear default margin */
     display: grid;
-    /* Two columns on desktop */
-    grid-template-columns: 1fr 1fr;
+    /* FIX: Ensure this is a single column for the long whiskey ingredients text */
+    grid-template-columns: 1fr;
     gap: 30px 40px;
     text-align: left;
 }
