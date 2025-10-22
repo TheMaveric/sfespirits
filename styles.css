@@ -9,7 +9,7 @@
     color: #0a0a0a;
     text-align: center;
     padding: 10px 0;
-    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-size: clamp(1.8rem, 3.0vw, 2.3rem);
     font-weight: 900;
     /* FIX: Use 'Playfair Display' font to match 'The Harbour Collection' titles */
     font-family: 'Playfair Display', serif;
@@ -32,7 +32,7 @@
     max-width: 1400px;
     margin: 0 auto;
     /* Increased top padding to push content below the 40px tall banner */
-    padding: 40px 40px 0;
+    padding: 60px 60px 0;
 }
 /* --- End New CSS for Launch Banner --- */
 
@@ -79,6 +79,13 @@ h4 { font-size: clamp(1.4rem, 3vw, 1.8rem); margin-bottom: 1rem; color: #d4af37;
 h5 { font-size: clamp(1.2rem, 2.5vw, 1.5rem); margin-bottom: 1rem; color: #d4af37; }
 h6 { font-size: 1.2rem; margin: 0 0 8px 0; color: #d4af37; }
 
+/* New specific size for the tagline to be smaller than h2 but larger than h3 */
+.sfe-tagline {
+    font-size: clamp(2.5rem, 5vw, 3.5rem); /* Smaller than h2 (4.5rem) */
+    margin-top: -1rem; /* Pull it slightly closer to the h2 */
+    margin-bottom: 2rem;
+    color: #ffffff; /* Use white color for SFE Spirits text */
+}
 
 p {
     max-width: 80ch;
@@ -911,3 +918,4 @@ cite {
     .image-slider .next-btn { right: 5px; }
 }
 /* --- End New CSS for Home Page Image Slider --- */
+}
