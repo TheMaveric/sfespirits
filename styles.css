@@ -81,7 +81,7 @@ h6 { font-size: 1.2rem; margin: 0 0 8px 0; color: #d4af37; }
 
 /* New specific size for the tagline to be smaller than h2 but larger than h3 */
 .sfe-tagline {
-    font-size: clamp(2.5rem, 5vw, 3.5rem); /* Smaller than h2 (4.5rem) */
+    font-size: clamp(1.5rem, 3vw, 1.5rem); /* Smaller than h2 (4.5rem) */
     margin-top: -1rem; /* Pull it slightly closer to the h2 */
     margin-bottom: 2rem;
     color: #ffffff; /* Use white color for SFE Spirits text */
